@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/tasbih_menu"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/baad_alsalah"
+            android:checked="true"
+            android:orderInCategory="1"
+            android:title="بعد الصلاة"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/zekr_hor"
+            android:orderInCategory="2"
+            android:title="ذكر حر"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/gheer_mohadad"
+            android:orderInCategory="3"
+            android:title="غير محدد"
+            app:showAsAction="never" />
+    </group>
+</menu>
