@@ -19,16 +19,24 @@ public class Tasbih extends Fragment {
 
 
     MenuItem reset;
+    int selected_item;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tasbih_layout, container, false);
+        View v = inflater.inflate(R.layout.tasbih_layout, container, false);
+
+        //initialize the first fragment
+        getActivity().getSupportFragmentManager()
+                .beginTransaction().replace(R.id.container, new BaadAlsalahFragment())
+                .commit();
         return v;
     }
 
@@ -37,6 +45,12 @@ public class Tasbih extends Fragment {
         getActivity().getMenuInflater().inflate(R.menu.tasbih_menu, menu);
         reset = menu.findItem(R.id.reset);
 
+        if (selected_item != 0) {
+            menu.findItem(selected_item).setChecked(true);
+            if (selected_item == R.id.gheer_mohadad) {
+                reset.setVisible(true);
+            }
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -57,6 +71,8 @@ public class Tasbih extends Fragment {
                 reset.setVisible(true);
                 break;
         }
+
+        selected_item = item.getItemId();
         return true;
     }
 }

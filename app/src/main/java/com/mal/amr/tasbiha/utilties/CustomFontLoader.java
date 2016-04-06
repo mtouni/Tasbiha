@@ -12,10 +12,9 @@ public class CustomFontLoader {
     private static boolean FONTS_LOADED = false;
 
     private static Typeface customFont;
-    private static String fontPath = "fonts/stc.otf";
 
     public static void loadFont(Context context) {
-        customFont = Typeface.createFromAsset(context.getAssets(), fontPath);
+        customFont = Typeface.createFromAsset(context.getAssets(), "fonts/stc.otf");
 
         FONTS_LOADED = true;
     }
