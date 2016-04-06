@@ -6,23 +6,23 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/gheer_mohadad"
+            android:id="@+id/baad_alsalah"
             android:checked="true"
             android:orderInCategory="1"
-            android:title="غير محدد"
+            android:title="بعد الصلاة"
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/baad_alsalah"
+            android:id="@+id/gheer_mohadad"
             android:orderInCategory="2"
-            android:title="بعد الصلاة"
+            android:title="غير محدد"
             app:showAsAction="never" />
 
     </group>
 
     <item
-        android:title="إعادة تهيئة"
-        app:showAsAction="ifRoom"
+        android:id="@+id/reset"
         android:icon="@drawable/reset"
-        android:id="@+id/reset"/>
+        android:title="إعادة تهيئة"
+        app:showAsAction="ifRoom" />
 </menu>

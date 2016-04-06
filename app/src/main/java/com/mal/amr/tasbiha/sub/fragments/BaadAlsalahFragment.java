@@ -1,4 +1,4 @@
-package com.mal.amr.tasbiha.fragments;
+package com.mal.amr.tasbiha.sub.fragments;
 
 
 import android.os.Bundle;

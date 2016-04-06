@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mal.amr.tasbiha.R;
+import com.mal.amr.tasbiha.sub.fragments.BaadAlsalahFragment;
+import com.mal.amr.tasbiha.sub.fragments.GheerMohadadFragment;
 
 /**
  * Created by Amr on 4/5/2016.
@@ -53,10 +55,15 @@ public class Tasbih extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.baad_alsalah:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new BaadAlsalahFragment()).commit();
                 item.setChecked(true);
                 selected_item = item.getItemId();
                 break;
+
             case R.id.gheer_mohadad:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new GheerMohadadFragment()).commit();
                 item.setChecked(true);
                 selected_item = item.getItemId();
                 break;
