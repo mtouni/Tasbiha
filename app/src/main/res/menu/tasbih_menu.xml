@@ -23,4 +23,11 @@
             android:title="غير محدد"
             app:showAsAction="never" />
     </group>
+
+    <item
+        android:visible="false"
+        android:title="إعادة تهيئة"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/reset"
+        android:id="@+id/reset"/>
 </menu>
