@@ -17,8 +17,6 @@ import com.mal.amr.tasbiha.R;
  */
 public class Tasbih extends Fragment {
 
-
-    MenuItem reset;
     int selected_item;
 
     @Override
@@ -43,13 +41,9 @@ public class Tasbih extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.tasbih_menu, menu);
-        reset = menu.findItem(R.id.reset);
 
         if (selected_item != 0) {
             menu.findItem(selected_item).setChecked(true);
-            if (selected_item == R.id.gheer_mohadad) {
-                reset.setVisible(true);
-            }
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -60,15 +54,14 @@ public class Tasbih extends Fragment {
         switch (item.getItemId()) {
             case R.id.baad_alsalah:
                 item.setChecked(true);
-                reset.setVisible(false);
+                selected_item = item.getItemId();
                 break;
             case R.id.gheer_mohadad:
                 item.setChecked(true);
-                reset.setVisible(true);
+                selected_item = item.getItemId();
                 break;
         }
 
-        selected_item = item.getItemId();
         return true;
     }
 }

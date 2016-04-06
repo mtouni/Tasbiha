@@ -4,22 +4,23 @@
     <group
         android:id="@+id/tasbih_menu"
         android:checkableBehavior="single">
-        <item
-            android:id="@+id/baad_alsalah"
-            android:checked="true"
-            android:orderInCategory="1"
-            android:title="بعد الصلاة"
-            app:showAsAction="never" />
 
         <item
             android:id="@+id/gheer_mohadad"
-            android:orderInCategory="3"
+            android:checked="true"
+            android:orderInCategory="1"
             android:title="غير محدد"
             app:showAsAction="never" />
+
+        <item
+            android:id="@+id/baad_alsalah"
+            android:orderInCategory="2"
+            android:title="بعد الصلاة"
+            app:showAsAction="never" />
+
     </group>
 
     <item
-        android:visible="false"
         android:title="إعادة تهيئة"
         app:showAsAction="ifRoom"
         android:icon="@drawable/reset"

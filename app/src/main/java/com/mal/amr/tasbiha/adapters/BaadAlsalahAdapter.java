@@ -46,7 +46,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
     
     public static class ViewHolder extends RecyclerView.ViewHolder{

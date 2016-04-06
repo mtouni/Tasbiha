@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import com.mal.amr.tasbiha.adapters.BaadAlsalahAdapter;
 public class BaadAlsalahFragment extends Fragment {
 
     RecyclerView recyclerView;
-    String[] azkar_list = new String[4];
-    int[] num_list = new int[4];
+    String[] azkar_list = new String[3];
+    int[] num_list = new int[3];
 
     @Nullable
     @Override
@@ -34,10 +33,6 @@ public class BaadAlsalahFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.baad_alsalah_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
-        
-        for (int i : num_list) {
-            Log.d("i", i+"");
-        }
 
         return v;
     }

@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/accent"
-            android:textSize="30sp" />
+            android:textSize="45sp" />
 
         <TextView
             android:id="@+id/zekr"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="30sp" />
+            android:textSize="45sp" />
     </LinearLayout>
 
     <View

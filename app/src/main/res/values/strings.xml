@@ -5,13 +5,11 @@
         <item>سبحان الله</item>
         <item>الحمد لله</item>
         <item>الله أكبر</item>
-        <item>لا إله إلا الله وحده لا شريك له ، له الملك وله الحمد وهو على كل شيء قدير</item>
     </string-array>
 
     <integer-array name="num_list">
         <item>25</item>
         <item>33</item>
         <item>20</item>
-        <item>0</item>
     </integer-array>
 </resources>
