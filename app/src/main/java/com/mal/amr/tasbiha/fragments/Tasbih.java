@@ -62,10 +62,6 @@ public class Tasbih extends Fragment {
                 item.setChecked(true);
                 reset.setVisible(false);
                 break;
-            case R.id.zekr_hor:
-                item.setChecked(true);
-                reset.setVisible(false);
-                break;
             case R.id.gheer_mohadad:
                 item.setChecked(true);
                 reset.setVisible(true);

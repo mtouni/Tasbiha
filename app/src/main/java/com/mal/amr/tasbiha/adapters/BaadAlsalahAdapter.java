@@ -1,13 +1,14 @@
 package com.mal.amr.tasbiha.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.mal.amr.tasbiha.CounterActivity;
 import com.mal.amr.tasbiha.R;
 import com.mal.amr.tasbiha.utilties.CustomFontLoader;
 
@@ -38,7 +39,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, CounterActivity.class));
             }
         });
     }

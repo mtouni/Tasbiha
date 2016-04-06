@@ -12,12 +12,6 @@
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/zekr_hor"
-            android:orderInCategory="2"
-            android:title="ذكر حر"
-            app:showAsAction="never" />
-
-        <item
             android:id="@+id/gheer_mohadad"
             android:orderInCategory="3"
             android:title="غير محدد"
