@@ -36,6 +36,7 @@ public class Tasbih extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.tasbih_menu, menu);
         reset = menu.findItem(R.id.reset);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 

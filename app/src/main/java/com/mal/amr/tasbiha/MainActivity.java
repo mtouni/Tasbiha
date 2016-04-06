@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mal.amr.tasbiha.adapters.MainPagerAdapter;
+import com.mal.amr.tasbiha.utilties.ChangeFontFamily;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,10 +22,13 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        ChangeFontFamily.applyFontForToolbarTitle(this, toolbar);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
         tabLayout.addTab(tabLayout.newTab().setText("تسبيح"));
         tabLayout.addTab(tabLayout.newTab().setText("إحصاء"));
+        ChangeFontFamily.changeTabFontFamily(this, tabLayout);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount()));
