@@ -16,6 +16,7 @@ import com.mal.amr.tasbiha.R;
  */
 public class Ehsaa extends Fragment {
 
+    CalendarView calendarView;
 
     @Nullable
     @Override
@@ -23,23 +24,19 @@ public class Ehsaa extends Fragment {
 
         View v = inflater.inflate(R.layout.ehsaa_layout, container, false);
 
-        initializeCalendarView(v);
-        return v;
-    }
-
-    private void initializeCalendarView(View v) {
         CalendarView calendar = (CalendarView) v.findViewById(R.id.calendarView);
-        calendar.setShowWeekNumber(false);
+        calendar.setShowWeekNumber(true);
 
-        calendar.setFirstDayOfWeek(2);
+        calendar.setFirstDayOfWeek(7);
 
-        //calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.accent));
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 Toast.makeText(getContext(), dayOfMonth + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
             }
         });
-        }
+        return v;
+    }
+
 
 }
