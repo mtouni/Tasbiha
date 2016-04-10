@@ -6,12 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.mal.amr.tasbiha.utilties.ChangeFontFamily;
 
 public class CounterActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    FrameLayout frameLayout;
+    TextView count;
+    int mCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,18 @@ public class CounterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ChangeFontFamily.applyFontForToolbarTitle(this, toolbar);
+
+        frameLayout = (FrameLayout) findViewById(R.id.counter);
+        count = (TextView) findViewById(R.id.count);
+
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount+=1;
+                count.setText(String.valueOf(mCount));
+            }
+        });
+
     }
 
     @Override
@@ -37,6 +55,10 @@ public class CounterActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                break;
+            case R.id.reset:
+                mCount = 0;
+                count.setText(String.valueOf(mCount));
                 break;
         }
         return super.onOptionsItemSelected(item);
