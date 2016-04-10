@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +25,12 @@ public class BaadAlsalahFragment extends Fragment {
     String[] azkar_list = new String[3];
     int[] num_list = new int[3];
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,5 +44,20 @@ public class BaadAlsalahFragment extends Fragment {
         recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.reset_tasbih, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.reset2)
+            recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, new int[] {0, 0, 0}));
+
+        return super.onOptionsItemSelected(item);
     }
 }

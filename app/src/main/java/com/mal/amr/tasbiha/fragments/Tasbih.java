@@ -70,6 +70,6 @@ public class Tasbih extends Fragment {
                 break;
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }
