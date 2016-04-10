@@ -7,6 +7,7 @@ import android.provider.BaseColumns;
  */
 public class Contract implements BaseColumns {
     public static final String TABLE_NAME = "tasbihah";
+    public static final String DEMO_TABLE_NAME = "demo_tasbihah";
 
     public static final String FREE = "free";
     public static final String SOBHAN_ALLAH = "sobhan_allah";

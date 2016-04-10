@@ -42,13 +42,13 @@ public class Tasbih extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         getActivity().getMenuInflater().inflate(R.menu.tasbih_menu, menu);
 
         if (selected_item != 0) {
             menu.findItem(selected_item).setChecked(true);
         }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -70,6 +70,6 @@ public class Tasbih extends Fragment {
                 break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }

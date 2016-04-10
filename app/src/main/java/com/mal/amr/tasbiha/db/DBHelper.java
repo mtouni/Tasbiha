@@ -26,7 +26,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.ALLAH_AKBAR + " integer not null, " +
                 Contract.DATE + " text unique not null);";
 
+        final String demo_sql = "create table " + Contract.DEMO_TABLE_NAME +
+                " (" + Contract._ID + " integer primary key, " +
+                Contract.FREE + " integer not null, " +
+                Contract.SOBHAN_ALLAH + " integer not null, " +
+                Contract.ALHAMDULELLAH + " integer not null, " +
+                Contract.ALLAH_AKBAR + " integer not null, " +
+                Contract.DATE + " text unique not null);";
+
         db.execSQL(sql);
+        db.execSQL(demo_sql);
     }
 
     @Override
