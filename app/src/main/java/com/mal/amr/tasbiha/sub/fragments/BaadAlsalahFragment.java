@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,8 +29,12 @@ public class BaadAlsalahFragment extends Fragment {
     //String TAG = "BaadAlsalahFragment";
     RecyclerView recyclerView;
     String[] azkar_list = new String[3];
-    int[] num_list = new int[3];
+    int[] num_list = new int[]{0, 0, 0};
     SQLiteDatabase db;
+    Calendar calendar = Calendar.getInstance();
+    String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
+            + "/" + (calendar.get(Calendar.MONTH) + 1)
+            + "/" + calendar.get(Calendar.YEAR);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,54 +48,92 @@ public class BaadAlsalahFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_baad_alsalah, container, false);
 
         azkar_list = getActivity().getResources().getStringArray(R.array.azkar_list);
-        num_list = getActivity().getResources().getIntArray(R.array.num_list);
+        //num_list = getActivity().getResources().getIntArray(R.array.num_list);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.baad_alsalah_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        db = new DBHelper(getActivity()).getWritableDatabase();
+
+        Cursor cursor = db.query(Contract.DEMO_TABLE_NAME,
+                new String[]{Contract.FREE_TASBIH,
+                        Contract.SOBHAN_ALLAH,
+                        Contract.ALHAMDULELLAH,
+                        Contract.ALLAH_AKBAR,
+                        Contract.DATE_TASBIH
+                },
+                Contract.DATE_TASBIH + " = ?",
+                new String[]{whereArg},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                num_list[0] = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
+                num_list[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
+                num_list[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
+            } while (cursor.moveToNext());
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(Contract.DATE_TASBIH, whereArg);
+            db.insert(Contract.DEMO_TABLE_NAME, null, values);
+            db.insert(Contract.TABLE_NAME, null, values);
+        }
+
+        cursor.close();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        DBHelper dbHelper = new DBHelper(getActivity());
-        db = dbHelper.getWritableDatabase();
-
-        Calendar calendar = Calendar.getInstance();
-        String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
-                + "/" + (calendar.get(Calendar.MONTH) + 1)
-                + "/" + calendar.get(Calendar.YEAR);
-
-        Cursor cursor = db.query(Contract.DEMO_TABLE_NAME,
-                new String[]{Contract.DATE_TASBIH},
-                null, null, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                Log.d("data", cursor.getString(cursor.getColumnIndex(Contract.DATE_TASBIH)));
-            } while (cursor.moveToNext());
-        }
-        Log.d("cursor count", cursor.getCount() + "");
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Contract.DATE_TASBIH, whereArg);
-
-        if (cursor.getCount() == 0) {
-            long id = db.insert(Contract.DEMO_TABLE_NAME, null, contentValues);
-            Log.d("id", id + "");
-        }
-
-        cursor.close();
+//        db = new DBHelper(getActivity()).getWritableDatabase();
+//
+//        Calendar calendar = Calendar.getInstance();
+//        String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
+//                + "/" + (calendar.get(Calendar.MONTH) + 1)
+//                + "/" + calendar.get(Calendar.YEAR);
+//
+//        Cursor cursor = db.query(Contract.DEMO_TABLE_NAME,
+//                new String[]{Contract.DATE_TASBIH},
+//                null, null, null, null, null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Log.d("data", cursor.getString(cursor.getColumnIndex(Contract.DATE_TASBIH)));
+//            } while (cursor.moveToNext());
+//        }
+//        Log.d("cursor count", cursor.getCount() + "");
+//
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(Contract.DATE_TASBIH, whereArg);
+//
+//        if (cursor.getCount() == 0) {
+//            long id = db.insert(Contract.DEMO_TABLE_NAME, null, contentValues);
+//            Log.d("id", id + "");
+//        }
+//
+//        cursor.close();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.reset2)
+        if (item.getItemId() == R.id.reset2) {
             recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, new int[]{0, 0, 0}));
-
+            ContentValues values = new ContentValues();
+            values.put(Contract.SOBHAN_ALLAH, 0);
+            values.put(Contract.ALHAMDULELLAH, 0);
+            values.put(Contract.ALLAH_AKBAR, 0);
+            db.update(Contract.DEMO_TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[] {whereArg});
+        }
         return false;
     }
 }

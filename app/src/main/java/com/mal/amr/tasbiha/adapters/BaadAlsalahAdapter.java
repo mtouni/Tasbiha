@@ -33,13 +33,17 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
     }
 
     @Override
-    public void onBindViewHolder(BaadAlsalahAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final BaadAlsalahAdapter.ViewHolder holder, final int position) {
         holder.zekr.setText(azkar_list[position]);
         holder.num.setText(String.valueOf(num_list[position]));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, CounterActivity.class));
+                Intent intent = new Intent(context, CounterActivity.class);
+                intent.putExtra("zekr", holder.getAdapterPosition());
+                intent.putExtra("num", num_list[holder.getAdapterPosition()]);
+                context.startActivity(intent);
             }
         });
     }

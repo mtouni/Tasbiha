@@ -28,10 +28,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         final String demo_sql = "CREATE TABLE " + Contract.DEMO_TABLE_NAME +
                 " (" + Contract._ID + " INTEGER PRIMARY KEY, " +
-                Contract.FREE_TASBIH + " INTEGER , " +
-                Contract.SOBHAN_ALLAH + " INTEGER , " +
-                Contract.ALHAMDULELLAH + " INTEGER , " +
-                Contract.ALLAH_AKBAR + " INTEGER , " +
+                Contract.FREE_TASBIH + " INTEGER default 0 , " +
+                Contract.SOBHAN_ALLAH + " INTEGER default 0 , " +
+                Contract.ALHAMDULELLAH + " INTEGER default 0 , " +
+                Contract.ALLAH_AKBAR + " INTEGER default 0 , " +
                 Contract.DATE_TASBIH + " TEXT not null unique );";
 
         db.execSQL(sql);
