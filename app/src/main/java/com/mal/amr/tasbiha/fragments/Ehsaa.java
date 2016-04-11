@@ -2,6 +2,8 @@ package com.mal.amr.tasbiha.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,8 @@ public class Ehsaa extends Fragment {
     String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
             + "/" + calendar.get(Calendar.MONTH)
             + "/" + calendar.get(Calendar.YEAR);
+    CoordinatorLayout coordinatorLayout;
+    Snackbar snackbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class Ehsaa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.ehsaa_layout, container, false);
+
+        coordinatorLayout = (CoordinatorLayout) v.findViewById(R.id.coordinatorLayout);
 
         calendarView = (CalendarView) v.findViewById(R.id.calendarView);
         calendarView.setShowWeekNumber(false);
@@ -64,7 +70,14 @@ public class Ehsaa extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
+                 snackbar = Snackbar.make(coordinatorLayout, "Welcome", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Ok", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snackbar.dismiss();
+                            }
+                        });
+                snackbar.show();
             }
         });
         return v;
