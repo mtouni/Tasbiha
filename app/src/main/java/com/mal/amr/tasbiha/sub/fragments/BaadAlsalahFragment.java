@@ -66,7 +66,7 @@ public class BaadAlsalahFragment extends Fragment {
                 + "/" + (calendar.get(Calendar.MONTH) + 1)
                 + "/" + calendar.get(Calendar.YEAR);
 
-        Cursor cursor = db.query(Contract.TABLE_NAME,
+        Cursor cursor = db.query(Contract.DEMO_TABLE_NAME,
                 new String[]{Contract.DATE_TASBIH},
                 null, null, null, null, null);
 
@@ -81,7 +81,7 @@ public class BaadAlsalahFragment extends Fragment {
         contentValues.put(Contract.DATE_TASBIH, whereArg);
 
         if (cursor.getCount() == 0) {
-            long id = db.insert(Contract.TABLE_NAME, null, contentValues);
+            long id = db.insert(Contract.DEMO_TABLE_NAME, null, contentValues);
             Log.d("id", id + "");
         }
 

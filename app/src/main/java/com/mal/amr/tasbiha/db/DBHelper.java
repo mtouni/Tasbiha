@@ -24,24 +24,24 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.SOBHAN_ALLAH + " INTEGER , " +
                 Contract.ALHAMDULELLAH + " INTEGER , " +
                 Contract.ALLAH_AKBAR + " INTEGER , " +
-                Contract.DATE_TASBIH + " TEXT );";
+                Contract.DATE_TASBIH + " TEXT not null unique );";
 
-//        final String demo_sql = "create table " + Contract.DEMO_TABLE_NAME +
-//                " (" + Contract._ID + " integer primary key, " +
-//                Contract.FREE + " integer not null, " +
-//                Contract.SOBHAN_ALLAH + " integer not null, " +
-//                Contract.ALHAMDULELLAH + " integer not null, " +
-//                Contract.ALLAH_AKBAR + " integer not null, " +
-//                Contract.DATE + " text unique not null);";
+        final String demo_sql = "CREATE TABLE " + Contract.DEMO_TABLE_NAME +
+                " (" + Contract._ID + " INTEGER PRIMARY KEY, " +
+                Contract.FREE_TASBIH + " INTEGER , " +
+                Contract.SOBHAN_ALLAH + " INTEGER , " +
+                Contract.ALHAMDULELLAH + " INTEGER , " +
+                Contract.ALLAH_AKBAR + " INTEGER , " +
+                Contract.DATE_TASBIH + " TEXT not null unique );";
 
         db.execSQL(sql);
-        //db.execSQL(demo_sql);
+        db.execSQL(demo_sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + Contract.TABLE_NAME);
-        //db.execSQL("drop table if exists " + Contract.DEMO_TABLE_NAME);
+        db.execSQL("drop table if exists " + Contract.DEMO_TABLE_NAME);
 
         onCreate(db);
     }
