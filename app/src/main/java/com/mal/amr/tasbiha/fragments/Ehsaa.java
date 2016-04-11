@@ -40,23 +40,23 @@ public class Ehsaa extends Fragment {
         calendarView = (CalendarView) v.findViewById(R.id.calendarView);
         calendarView.setShowWeekNumber(false);
 
-        calendarView.setFirstDayOfWeek(7);
+        calendarView.setFirstDayOfWeek(1);
 
         Calendar minCalndarViewLimit = Calendar.getInstance();
         minCalndarViewLimit.set(Calendar.SECOND, 0);
         minCalndarViewLimit.set(Calendar.MINUTE, 0);
         minCalndarViewLimit.set(Calendar.HOUR, 0);
-        minCalndarViewLimit.set(Calendar.DAY_OF_MONTH, 1);
-        minCalndarViewLimit.set(Calendar.MONTH, minCalndarViewLimit.get(Calendar.MONTH));
-        minCalndarViewLimit.set(Calendar.YEAR, minCalndarViewLimit.get(Calendar.YEAR));
+        minCalndarViewLimit.set(Calendar.DAY_OF_MONTH, minCalndarViewLimit.getActualMinimum(Calendar.DAY_OF_MONTH));
+        minCalndarViewLimit.set(Calendar.MONTH, minCalndarViewLimit.get(Calendar.MONTH) );
 
         Calendar maxCalndarViewLimit = Calendar.getInstance();
         maxCalndarViewLimit.set(Calendar.SECOND, 0);
         maxCalndarViewLimit.set(Calendar.MINUTE, 0);
         maxCalndarViewLimit.set(Calendar.HOUR, 0);
-        maxCalndarViewLimit.set(Calendar.DAY_OF_MONTH, 31);
+        maxCalndarViewLimit.set(Calendar.DAY_OF_MONTH, maxCalndarViewLimit.getActualMaximum(Calendar.DAY_OF_MONTH));
         maxCalndarViewLimit.set(Calendar.MONTH, maxCalndarViewLimit.get(Calendar.MONTH));
         maxCalndarViewLimit.set(Calendar.YEAR, maxCalndarViewLimit.get(Calendar.YEAR));
+
 
         calendarView.setMinDate(minCalndarViewLimit.getTimeInMillis());
         calendarView.setMaxDate(maxCalndarViewLimit.getTimeInMillis());
