@@ -19,7 +19,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
 
     Context context;
     String[] azkar_list;
-    int[] num_list;
+    public static int[] num_list;
 
     public BaadAlsalahAdapter(Context context, String[] azkar_list, int[] num_list) {
         this.context = context;
@@ -37,15 +37,15 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
         holder.zekr.setText(azkar_list[position]);
         holder.num.setText(String.valueOf(num_list[position]));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CounterActivity.class);
-                intent.putExtra("zekr", holder.getAdapterPosition());
-                intent.putExtra("num", num_list[holder.getAdapterPosition()]);
-                context.startActivity(intent);
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, CounterActivity.class);
+//                intent.putExtra("zekr", holder.getAdapterPosition());
+//                intent.putExtra("num", num_list[holder.getAdapterPosition()]);
+//                context.startActivity(intent);
+//            }
+//        });
     }
 
     @Override
@@ -53,7 +53,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
         return 3;
     }
     
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView zekr, num;
         Context context;
@@ -66,6 +66,16 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
             zekr = (TextView) itemView.findViewById(R.id.zekr);
             zekr.setTypeface(CustomFontLoader.getCustomFont(context));
             num = (TextView) itemView.findViewById(R.id.num);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, CounterActivity.class);
+            intent.putExtra("zekr", getAdapterPosition());
+            intent.putExtra("num", num_list[getAdapterPosition()]);
+            context.startActivity(intent);
         }
     }
 }

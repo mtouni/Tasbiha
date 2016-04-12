@@ -33,6 +33,8 @@ public class GheerMohadadFragment extends Fragment {
             + "/" + (calendar.get(Calendar.MONTH) + 1)
             + "/" + calendar.get(Calendar.YEAR);
 
+    int oldCount;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +56,13 @@ public class GheerMohadadFragment extends Fragment {
                 count.setText(String.valueOf(mCount));
 
                 ContentValues values = new ContentValues();
-                values.put(Contract.FREE_TASBIH, mCount);
-                db.update(Contract.DEMO_TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
-                db.update(Contract.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+                values.put(Contract.FREE_TASBIH, mCount + oldCount);
+                db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+                ContentValues values2 = new ContentValues();
+                values2.put(Contract.FREE_TASBIH, mCount);
+                db.update(Contract.TempTasbiha.TABLE_NAME, values2, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
             }
         });
 
@@ -69,7 +75,7 @@ public class GheerMohadadFragment extends Fragment {
 
         db = new DBHelper(getActivity()).getWritableDatabase();
 
-        Cursor cursor = db.query(Contract.DEMO_TABLE_NAME,
+        Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
                 new String[]{Contract.FREE_TASBIH,
                         Contract.SOBHAN_ALLAH,
                         Contract.ALHAMDULELLAH,
@@ -90,8 +96,8 @@ public class GheerMohadadFragment extends Fragment {
         } else {
             ContentValues values = new ContentValues();
             values.put(Contract.DATE_TASBIH, whereArg);
-            db.insert(Contract.DEMO_TABLE_NAME, null, values);
-            db.insert(Contract.TABLE_NAME, null, values);
+            db.insert(Contract.TempTasbiha.TABLE_NAME, null, values);
+            db.insert(Contract.Tasbiha.TABLE_NAME, null, values);
         }
 
         cursor.close();
@@ -102,13 +108,24 @@ public class GheerMohadadFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.reset2) {
+
+            Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
+                    new String[]{Contract.FREE_TASBIH},
+                    Contract.DATE_TASBIH + " = ?",
+                    new String[]{whereArg},
+                    null, null, null);
+
+            if (cursor.moveToFirst()) {
+                oldCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+            }
+
             mCount = 0;
             count.setText(String.valueOf(mCount));
 
             ContentValues values = new ContentValues();
             values.put(Contract.FREE_TASBIH, 0);
-            db.update(Contract.DEMO_TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+            db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
         }
-        return false;
+        return true;
     }
 }
