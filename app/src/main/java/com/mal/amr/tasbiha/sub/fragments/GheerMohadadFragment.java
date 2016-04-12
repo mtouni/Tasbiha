@@ -26,7 +26,7 @@ public class GheerMohadadFragment extends Fragment {
 
     FrameLayout frameLayout;
     TextView count;
-    int mCount;
+    int mCounter;
     SQLiteDatabase db;
     Calendar calendar = Calendar.getInstance();
     String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
@@ -34,11 +34,14 @@ public class GheerMohadadFragment extends Fragment {
             + "/" + calendar.get(Calendar.YEAR);
 
     int oldCount;
+    int currentCount;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        db = new DBHelper(getActivity()).getWritableDatabase();
     }
 
     @Nullable
@@ -49,20 +52,34 @@ public class GheerMohadadFragment extends Fragment {
         frameLayout = (FrameLayout) v.findViewById(R.id.counter);
         count = (TextView) v.findViewById(R.id.count);
 
+        Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
+                new String[]{Contract.FREE_TASBIH},
+                Contract.DATE_TASBIH + " = ?",
+                new String[]{whereArg},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            oldCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+        }
+        cursor.close();
+
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCount += 1;
-                count.setText(String.valueOf(mCount));
+
+                mCounter += 1;
+                currentCount += 1;
 
                 ContentValues values = new ContentValues();
 
-                values.put(Contract.FREE_TASBIH, mCount + oldCount);
+                values.put(Contract.FREE_TASBIH, (mCounter + oldCount));
                 db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
                 ContentValues values2 = new ContentValues();
-                values2.put(Contract.FREE_TASBIH, mCount);
+                values2.put(Contract.FREE_TASBIH, currentCount);
                 db.update(Contract.TempTasbiha.TABLE_NAME, values2, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+                count.setText(String.valueOf(currentCount));
             }
         });
 
@@ -72,8 +89,6 @@ public class GheerMohadadFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        db = new DBHelper(getActivity()).getWritableDatabase();
 
         Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
                 new String[]{Contract.FREE_TASBIH,
@@ -89,7 +104,8 @@ public class GheerMohadadFragment extends Fragment {
         if (cursor.moveToFirst()) {
             do {
 
-                mCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+                currentCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+                count.setText(String.valueOf(currentCount));
 
             } while (cursor.moveToNext());
 
@@ -101,8 +117,6 @@ public class GheerMohadadFragment extends Fragment {
         }
 
         cursor.close();
-
-        count.setText(String.valueOf(mCount));
     }
 
     @Override
@@ -118,9 +132,12 @@ public class GheerMohadadFragment extends Fragment {
             if (cursor.moveToFirst()) {
                 oldCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
             }
+            cursor.close();
 
-            mCount = 0;
-            count.setText(String.valueOf(mCount));
+            mCounter = 0;
+            currentCount = 0;
+
+            count.setText(String.valueOf(currentCount));
 
             ContentValues values = new ContentValues();
             values.put(Contract.FREE_TASBIH, 0);
