@@ -40,6 +40,8 @@ public class GheerMohadadFragment extends Fragment {
     //the current counter
     // which help me in storing in the db,
     // and it's zero when we start the app and it will be zero after using reset menu
+    //and there is no affect on it
+    //we just use it for get the current counting since we start the app
     int mCounter;
 
     //the old count after reset to zero
@@ -48,7 +50,7 @@ public class GheerMohadadFragment extends Fragment {
     //the exact count to be displayed in the text view
     //and it gets an exact number from the db in starting the app to be displayed,
     // and it will be zero in using the reset menu
-    int currentCount;
+    int currentTempCount;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,20 +90,20 @@ public class GheerMohadadFragment extends Fragment {
 
                 //to increase both of them by 1
                 mCounter += 1;
-                currentCount += 1;
+                currentTempCount += 1;
 
                 //to store in the original db
                 ContentValues values = new ContentValues();
-                //notice that we use ( mCounter + oldCount )
+                //notice that we use ( mCounter + oldCount ) even if the mCount is zero
                 values.put(Contract.FREE_TASBIH, (mCounter + oldCount));
                 db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
                 //to store in the temp db
                 ContentValues values2 = new ContentValues();
-                values2.put(Contract.FREE_TASBIH, currentCount);
+                values2.put(Contract.FREE_TASBIH, currentTempCount);
                 db.update(Contract.TempTasbiha.TABLE_NAME, values2, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
-                count.setText(String.valueOf(currentCount));
+                count.setText(String.valueOf(currentTempCount));
             }
         });
 
@@ -126,9 +128,9 @@ public class GheerMohadadFragment extends Fragment {
         if (cursor.moveToFirst()) {
             do {
 
-                //to show the exact number in the temp db when starting the app, therefore we use currentCount
-                currentCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
-                count.setText(String.valueOf(currentCount));
+                //to show the exact number in the temp db when starting the app, therefore we use currentTempCount
+                currentTempCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+                count.setText(String.valueOf(currentTempCount));
 
             } while (cursor.moveToNext());
 
@@ -156,6 +158,7 @@ public class GheerMohadadFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.reset2) {
 
+            //in reset menu, we get the last number from the original db and store it in oldCount variable
             Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
                     new String[]{Contract.FREE_TASBIH},
                     Contract.DATE_TASBIH + " = ?",
@@ -167,11 +170,14 @@ public class GheerMohadadFragment extends Fragment {
             }
             cursor.close();
 
+            //to make them both ZERO
             mCounter = 0;
-            currentCount = 0;
+            currentTempCount = 0;
 
-            count.setText(String.valueOf(currentCount));
+            //since the currentTempCount is for just displaying in text view
+            count.setText(String.valueOf(currentTempCount));
 
+            //update the temp db with zero number
             ContentValues values = new ContentValues();
             values.put(Contract.FREE_TASBIH, 0);
             db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
