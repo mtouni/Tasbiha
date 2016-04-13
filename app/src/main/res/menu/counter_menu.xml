@@ -4,6 +4,6 @@
     <item
         android:id="@+id/reset"
         android:icon="@drawable/reset2"
-        android:title="إعادة تهيئة"
+        android:title="@string/reset"
         app:showAsAction="ifRoom" />
 </menu>

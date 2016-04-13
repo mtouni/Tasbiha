@@ -9,13 +9,13 @@
             android:id="@+id/baad_alsalah"
             android:checked="true"
             android:orderInCategory="1"
-            android:title="بعد الصلاة"
+            android:title="@string/after_salah"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/gheer_mohadad"
             android:orderInCategory="2"
-            android:title="غير محدد"
+            android:title="@string/gheer_mohadad"
             app:showAsAction="never" />
 
     </group>
@@ -23,6 +23,6 @@
     <item
         android:id="@+id/reset2"
         android:icon="@drawable/reset"
-        android:title="إعادة تهيئة"
+        android:title="@string/reset"
         app:showAsAction="ifRoom" />
 </menu>

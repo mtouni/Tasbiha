@@ -23,4 +23,8 @@
     </integer-array>
 
     <string name="done" translatable="false">تم</string>
+    <string name="reset" translatable="false">إعادة تهيئة</string>
+    <string name="return_to_current_day" translatable="false">عودة لليوم الحالي</string>
+    <string name="after_salah" translatable="false">بعد الصلاة</string>
+    <string name="gheer_mohadad" translatable="false">غير محدد</string>
 </resources>
