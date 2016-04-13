@@ -49,6 +49,8 @@ public class CounterActivity extends AppCompatActivity {
     // and it will be zero in using the reset menu
     int currentTempCount;
 
+    String nameInDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class CounterActivity extends AppCompatActivity {
         intent = getIntent();
         zekr = intent.getExtras().getInt("zekr");
         currentTempCount = intent.getExtras().getInt("num");
+        nameInDB = intent.getExtras().getString("nameInDB");
 
         Log.d("zekr", String.valueOf(zekr));
         Log.d("oldNum", String.valueOf(currentTempCount));
@@ -81,7 +84,7 @@ public class CounterActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
         if (cursor.moveToFirst()) {
             do {
-                switch (intent.getExtras().getString("nameInDB")) {
+                switch (nameInDB) {
                     case Contract.SOBHAN_ALLAH:
                         exactNum = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
                         Log.d("exactNum", exactNum + "");
@@ -108,32 +111,14 @@ public class CounterActivity extends AppCompatActivity {
                 currentTempCount += 1;
 
                 count.setText(String.valueOf(currentTempCount));
-
-                switch (zekr) {
-                    case 0:
-                        updateDB(Contract.SOBHAN_ALLAH, mCounter);
-                        break;
-
-                    case 1:
-                        updateDB(Contract.ALHAMDULELLAH, mCounter);
-                        break;
-
-                    case 2:
-                        updateDB(Contract.ALLAH_AKBAR, mCounter);
-                        break;
-                }
             }
         });
 
     }
 
-    public void updateDB(String col, int n) {
-
-    }
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -150,33 +135,25 @@ public class CounterActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.reset:
-//                newNum = 0;
-//                count.setText(String.valueOf(newNum));
-                switchZekr(zekr);
+                updateDB(nameInDB, mCounter, exactNum);
+                mCounter = 0;
+                currentTempCount = 0;
+                count.setText(String.valueOf(currentTempCount));
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchZekr(int z) {
-        switch (z) {
-            case 0:
-                resetZekr(Contract.SOBHAN_ALLAH);
-                break;
-
-            case 1:
-                resetZekr(Contract.ALHAMDULELLAH);
-                break;
-
-            case 2:
-                resetZekr(Contract.ALLAH_AKBAR);
-                break;
-        }
-    }
-
-    private void resetZekr(String col) {
+    public void updateDB(String col, int c, int n) {
         ContentValues values = new ContentValues();
         values.put(col, 0);
         db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+        ContentValues values1 = new ContentValues();
+        values1.put(col, (c + n));
+        db.update(Contract.Tasbiha.TABLE_NAME, values1, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+        exactNum += c;
     }
+
 }
