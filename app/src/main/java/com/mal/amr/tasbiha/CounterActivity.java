@@ -127,6 +127,10 @@ public class CounterActivity extends AppCompatActivity {
                                 .setPositiveButton("تم", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        ContentValues values = new ContentValues();
+                                        values.put(Contract.LA_ELAH_ELLA_ALLAH, (la_elah_ella_allah + 1));
+                                        db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
                                         finish();
                                     }
                                 });
@@ -142,9 +146,6 @@ public class CounterActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        ContentValues values = new ContentValues();
-                                        values.put(Contract.LA_ELAH_ELLA_ALLAH, (la_elah_ella_allah + 1));
-                                        db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
                                         finish();
                                     }
                                 });
