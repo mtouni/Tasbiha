@@ -115,7 +115,7 @@ public class Ehsaa extends Fragment {
                 }
 
                 snackbar = Snackbar.make(coordinatorLayout, String.valueOf(sum), Snackbar.LENGTH_INDEFINITE)
-                        .setAction("تم", new View.OnClickListener() {
+                        .setAction(R.string.done, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 snackbar.dismiss();

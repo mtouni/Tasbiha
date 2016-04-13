@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">تسبيحة</string>
-    <string name="hadith">
+    <string name="app_name" translatable="false">تسبيحة</string>
+    <string name="hadith" translatable="false">
         روى أبو هريرة عن النبي صلى الله عليه وسلم أنه قال :  (من سبح الله في دبر كل صلاة ثلاثا وثلاثين ، وحمد الله ثلاثا وثلاثين ، وكبر الله ثلاثا وثلاثين ، فتلك تسعة وتسعون ، وقال تمام المائة : لا إله إلا الله وحده لا شريك له ، له الملك وله الحمد وهو على كل شيء قدير ، غفرت خطاياه ولو كانت مثل زبد البحر)
     </string>
 
@@ -8,9 +8,9 @@
         وقال تمام المائة: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، غفرت خطاياه ولو كانت مثل زبد البحر
     </string>
 
-    <string name="zekr_alert">لقد أتممت الثلاثة والثلاثين تسبيحة</string>
+    <string name="zekr_alert" translatable="false">لقد أتممت الثلاثة والثلاثين تسبيحة</string>
 
-    <string-array name="azkar_list">
+    <string-array name="azkar_list" translatable="false">
         <item>سبحان الله</item>
         <item>الحمد لله</item>
         <item>الله أكبر</item>
@@ -21,4 +21,6 @@
         <item>0</item>
         <item>0</item>
     </integer-array>
+
+    <string name="done" translatable="false">تم</string>
 </resources>
