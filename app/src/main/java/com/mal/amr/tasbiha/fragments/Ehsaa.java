@@ -27,14 +27,13 @@ public class Ehsaa extends Fragment {
 
     CalendarView calendarView;
     Calendar calendar = Calendar.getInstance();
-    String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
-            + "/" + calendar.get(Calendar.MONTH)
-            + "/" + calendar.get(Calendar.YEAR);
     CoordinatorLayout coordinatorLayout;
     Snackbar snackbar;
     SQLiteDatabase db;
-    int[] num = new int[] {0, 0, 0, 0};
+    int[] num = new int[]{0, 0, 0, 0};
     int sum = 0;
+
+    int mDay, mMonth, mYear;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +79,10 @@ public class Ehsaa extends Fragment {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
+                mDay = dayOfMonth;
+                mMonth = month;
+                mYear = year;
+
                 sum = 0;
 
                 Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
@@ -97,7 +100,7 @@ public class Ehsaa extends Fragment {
                         num[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
                         num[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
                         num[3] = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
-                    }while (cursor.moveToNext());
+                    } while (cursor.moveToNext());
 
                     for (int i : num) {
                         sum += i;
@@ -129,17 +132,44 @@ public class Ehsaa extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.up_or_down) {
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DAY_OF_MONTH, day);
+//        if (item.getItemId() == R.id.up_or_down) {
+//
+//        }
 
-            long millitTime = calendar.getTimeInMillis();
-            calendarView.setDate(millitTime);
+        switch (item.getItemId()) {
+            case R.id.up_or_down:
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
 
+                long millitTime = calendar.getTimeInMillis();
+                calendarView.setDate(millitTime);
+                break;
+
+//            case R.id.reset3:
+//                //to be modified
+//                String whereArg = mDay
+//                        + "/" + (mMonth + 1)
+//                        + "/" + mYear;
+//                ContentValues values = new ContentValues();
+//                values.put(Contract.FREE_TASBIH, 0);
+//                values.put(Contract.SOBHAN_ALLAH, 0);
+//                values.put(Contract.ALHAMDULELLAH, 0);
+//                values.put(Contract.ALLAH_AKBAR, 0);
+//                db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+//
+//                snackbar = Snackbar.make(coordinatorLayout, String.valueOf(0), Snackbar.LENGTH_INDEFINITE)
+//                        .setAction("تم", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                snackbar.dismiss();
+//                            }
+//                        });
+//                snackbar.show();
+//                break;
         }
 
         return false;

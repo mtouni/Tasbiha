@@ -2,6 +2,7 @@ package com.mal.amr.tasbiha.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
     public int getItemCount() {
         return 3;
     }
-    
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView zekr, num;
@@ -74,11 +75,22 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, CounterActivity.class);
-            intent.putExtra("zekr", getAdapterPosition());
-            intent.putExtra("num", num_list[getAdapterPosition()]);
-            intent.putExtra("nameInDB", azkarDB[getAdapterPosition()]);
-            context.startActivity(intent);
+
+            if (num_list[getAdapterPosition()] == 33) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+                builder.setMessage(R.string.hadith)
+                        .setPositiveButton("تم", null);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+            } else {
+                Intent intent = new Intent(context, CounterActivity.class);
+                intent.putExtra("zekr", getAdapterPosition());
+                intent.putExtra("num", num_list[getAdapterPosition()]);
+                intent.putExtra("nameInDB", azkarDB[getAdapterPosition()]);
+                context.startActivity(intent);
+            }
         }
     }
 }
