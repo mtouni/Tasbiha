@@ -149,6 +149,9 @@ public class GheerMohadadFragment extends Fragment {
             //insert in the db
             db.insert(Contract.TempTasbiha.TABLE_NAME, null, values);
             db.insert(Contract.Tasbiha.TABLE_NAME, null, values);
+
+            //since this is a new day, so start from zero
+            count.setText(String.valueOf(currentTempCount));
         }
 
         cursor.close();
