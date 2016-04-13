@@ -29,10 +29,17 @@ public class CounterActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     TextView count;
     SQLiteDatabase db;
+
+    //to get the coming intent and its data
+    //currentTempCount variable >>
+    // the exact count to be displayed in the text view
+    //and it gets an exact number from the db in starting the app to be displayed,
+    // and it will be zero in using the reset menu
     Intent intent;
     int zekr, currentTempCount, restSum;
     String nameInDB;
 
+    //to get the current date for a query
     Calendar calendar = Calendar.getInstance();
     String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
             + "/" + (calendar.get(Calendar.MONTH) + 1)
@@ -48,11 +55,6 @@ public class CounterActivity extends AppCompatActivity {
     //the old count after reset to zero
     int exactNum;
 
-    //currentTempCount variable >>
-    // the exact count to be displayed in the text view
-    //and it gets an exact number from the db in starting the app to be displayed,
-    // and it will be zero in using the reset menu
-
     boolean canBePressed = true;
 
     @Override
@@ -61,6 +63,8 @@ public class CounterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_counter);
 
         db = new DBHelper(this).getWritableDatabase();
+
+        //getting the intent and its data
         intent = getIntent();
         zekr = intent.getExtras().getInt("zekr");
         currentTempCount = intent.getExtras().getInt("num");
@@ -82,6 +86,7 @@ public class CounterActivity extends AppCompatActivity {
 
         count.setText(String.valueOf(currentTempCount));
 
+        //to get the previous exact number of the selected item in the db
         String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
         if (cursor.moveToFirst()) {
@@ -106,10 +111,12 @@ public class CounterActivity extends AppCompatActivity {
         }
         cursor.close();
 
+        //when pressing the whole layout
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //if it's available to press
                 if (canBePressed) {
                     mCounter += 1;
                     currentTempCount += 1;
@@ -119,14 +126,18 @@ public class CounterActivity extends AppCompatActivity {
 
                 if (currentTempCount == 33) {
 
+                    //make it's not available any more to be pressed for the whole layout
                     canBePressed = false;
 
+                    //if it's now 99
                     if ((currentTempCount + restSum) == 99) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
                         builder.setMessage(R.string.la_elah_ella_allah)
                                 .setPositiveButton("تم", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+
+                                        //adding one to the previous number in db
                                         ContentValues values = new ContentValues();
                                         values.put(Contract.LA_ELAH_ELLA_ALLAH, (la_elah_ella_allah + 1));
                                         db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
@@ -138,8 +149,11 @@ public class CounterActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.setCanceledOnTouchOutside(false);
                         alertDialog.show();
+
+
                     } else {
 
+                        //if it's just 33
                         AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
                         builder.setMessage(R.string.zekr_alert)
                                 .setPositiveButton("تم", new DialogInterface.OnClickListener() {
@@ -161,12 +175,14 @@ public class CounterActivity extends AppCompatActivity {
 
     }
 
+    //the previous number from a db
     int la_elah_ella_allah;
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        //get the previous number from db
         String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
         if (cursor.moveToFirst()) {
@@ -179,15 +195,18 @@ public class CounterActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        //updating the db in leaving the activity
         updateDbInLeaving(nameInDB, currentTempCount, mCounter, exactNum);
 
     }
 
     private void updateDbInLeaving(String col, int temp, int c, int n) {
+        //for updating the temp db
         ContentValues values = new ContentValues();
         values.put(col, temp);
         db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
+        //for updating the original db
         ContentValues values1 = new ContentValues();
         values1.put(col, (c + n));
         db.update(Contract.Tasbiha.TABLE_NAME, values1, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
@@ -207,6 +226,8 @@ public class CounterActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.reset:
+
+                //reset the temp db and add the current to the original db
                 updateDbByResetMenu(nameInDB, mCounter, exactNum);
                 mCounter = 0;
                 currentTempCount = 0;
@@ -217,10 +238,12 @@ public class CounterActivity extends AppCompatActivity {
     }
 
     public void updateDbByResetMenu(String col, int c, int n) {
+        //for temp db
         ContentValues values = new ContentValues();
         values.put(col, 0);
         db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
+        //for original db
         ContentValues values1 = new ContentValues();
         values1.put(col, (c + n));
         db.update(Contract.Tasbiha.TABLE_NAME, values1, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
