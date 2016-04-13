@@ -85,9 +85,18 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
                 alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.show();
             } else {
+                int restSum = 0;
+                for (int i = 0; i < num_list.length; i++) {
+                    if (i != getAdapterPosition()) {
+                        restSum += num_list[i];
+                    }
+                }
+
+
                 Intent intent = new Intent(context, CounterActivity.class);
                 intent.putExtra("zekr", getAdapterPosition());
                 intent.putExtra("num", num_list[getAdapterPosition()]);
+                intent.putExtra("sum", restSum);
                 intent.putExtra("nameInDB", azkarDB[getAdapterPosition()]);
                 context.startActivity(intent);
             }

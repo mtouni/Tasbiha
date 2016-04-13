@@ -1,11 +1,13 @@
 package com.mal.amr.tasbiha;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,11 +30,13 @@ public class CounterActivity extends AppCompatActivity {
     TextView count;
     SQLiteDatabase db;
     Intent intent;
+    int zekr, currentTempCount, restSum;
+    String nameInDB;
+
     Calendar calendar = Calendar.getInstance();
     String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
             + "/" + (calendar.get(Calendar.MONTH) + 1)
             + "/" + calendar.get(Calendar.YEAR);
-    int zekr;
 
     //the current counter
     // which help me in storing in the db,
@@ -44,12 +48,10 @@ public class CounterActivity extends AppCompatActivity {
     //the old count after reset to zero
     int exactNum;
 
-    //the exact count to be displayed in the text view
+    //currentTempCount variable >>
+    // the exact count to be displayed in the text view
     //and it gets an exact number from the db in starting the app to be displayed,
     // and it will be zero in using the reset menu
-    int currentTempCount;
-
-    String nameInDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,8 @@ public class CounterActivity extends AppCompatActivity {
         intent = getIntent();
         zekr = intent.getExtras().getInt("zekr");
         currentTempCount = intent.getExtras().getInt("num");
+        restSum = intent.getExtras().getInt("sum");
         nameInDB = intent.getExtras().getString("nameInDB");
-
-        Log.d("zekr", String.valueOf(zekr));
-        Log.d("oldNum", String.valueOf(currentTempCount));
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -111,9 +111,35 @@ public class CounterActivity extends AppCompatActivity {
                 currentTempCount += 1;
 
                 count.setText(String.valueOf(currentTempCount));
+
+                if (currentTempCount == 33) {
+
+                    if ((currentTempCount + restSum) == 99) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
+                        builder.setMessage(R.string.la_elah_ella_allah)
+                                .setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
+                    }
+
+                }
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Toast.makeText(this, restSum + "", Toast.LENGTH_SHORT).show();
     }
 
     @Override
