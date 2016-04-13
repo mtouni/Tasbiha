@@ -53,6 +53,8 @@ public class CounterActivity extends AppCompatActivity {
     //and it gets an exact number from the db in starting the app to be displayed,
     // and it will be zero in using the reset menu
 
+    boolean canBePressed = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,12 +109,17 @@ public class CounterActivity extends AppCompatActivity {
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCounter += 1;
-                currentTempCount += 1;
 
-                count.setText(String.valueOf(currentTempCount));
+                if (canBePressed) {
+                    mCounter += 1;
+                    currentTempCount += 1;
+
+                    count.setText(String.valueOf(currentTempCount));
+                }
 
                 if (currentTempCount == 33) {
+
+                    canBePressed = false;
 
                     if ((currentTempCount + restSum) == 99) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
@@ -128,6 +135,7 @@ public class CounterActivity extends AppCompatActivity {
                         alertDialog.setCanceledOnTouchOutside(false);
                         alertDialog.show();
                     } else {
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
                         builder.setMessage(R.string.zekr_alert)
                                 .setPositiveButton("تم", new DialogInterface.OnClickListener() {
@@ -158,7 +166,7 @@ public class CounterActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String sql = "select * from " + Contract.TempTasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
+        String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
         Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
         if (cursor.moveToFirst()) {
             la_elah_ella_allah = cursor.getInt(cursor.getColumnIndex(Contract.LA_ELAH_ELLA_ALLAH));

@@ -104,7 +104,7 @@ public class BaadAlsalahFragment extends Fragment {
             values.put(Contract.SOBHAN_ALLAH, 0);
             values.put(Contract.ALHAMDULELLAH, 0);
             values.put(Contract.ALLAH_AKBAR, 0);
-            //values.put(Contract.LA_ELAH_ELLA_ALLAH, 0);
+            values.put(Contract.LA_ELAH_ELLA_ALLAH, 0);
             db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[] {whereArg});
         }
         return true;
