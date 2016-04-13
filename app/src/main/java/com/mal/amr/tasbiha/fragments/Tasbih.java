@@ -1,5 +1,7 @@
 package com.mal.amr.tasbiha.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,8 @@ import com.mal.amr.tasbiha.sub.fragments.GheerMohadadFragment;
 public class Tasbih extends Fragment {
 
     int selected_item;
+    SharedPreferences sh;
+    private int i;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,15 +37,30 @@ public class Tasbih extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tasbih_layout, container, false);
 
-        //initialize the first fragment
-        getActivity().getSupportFragmentManager()
-                .beginTransaction().replace(R.id.container, new BaadAlsalahFragment())
-                .commit();
+        sh = getActivity().getSharedPreferences("myFrsMenus", Context.MODE_PRIVATE);
 
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction().replace(R.id.container, new GheerMohadadFragment())
-//                .commit();
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        i = sh.getInt("f", 0);
+
+        switch (i) {
+            case 0:
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.container, new BaadAlsalahFragment())
+                        .commit();
+                break;
+
+            case 1:
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.container, new GheerMohadadFragment())
+                        .commit();
+                break;
+        }
     }
 
     @Override
@@ -50,6 +69,17 @@ public class Tasbih extends Fragment {
 
         if (selected_item != 0) {
             menu.findItem(selected_item).setChecked(true);
+        } else {
+
+            switch (i)  {
+                case 0:
+                    menu.findItem(R.id.baad_alsalah).setChecked(true);
+                    break;
+
+                case 1:
+                    menu.findItem(R.id.gheer_mohadad).setChecked(true);
+                    break;
+            }
         }
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -58,8 +88,13 @@ public class Tasbih extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        SharedPreferences.Editor editor = sh.edit();
+
         switch (item.getItemId()) {
             case R.id.baad_alsalah:
+                editor.putInt("f", 0);
+                editor.apply();
+
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new BaadAlsalahFragment()).commit();
                 item.setChecked(true);
@@ -67,6 +102,9 @@ public class Tasbih extends Fragment {
                 break;
 
             case R.id.gheer_mohadad:
+                editor.putInt("f", 1);
+                editor.apply();
+
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new GheerMohadadFragment()).commit();
                 item.setChecked(true);
