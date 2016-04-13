@@ -119,6 +119,19 @@ public class CounterActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        updateDbInLeaving(nameInDB, currentTempCount, mCounter, exactNum);
+
+    }
+
+    private void updateDbInLeaving(String col, int temp, int c, int n) {
+        ContentValues values = new ContentValues();
+        values.put(col, temp);
+        db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+
+        ContentValues values1 = new ContentValues();
+        values1.put(col, (c + n));
+        db.update(Contract.Tasbiha.TABLE_NAME, values1, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
     }
 
     @Override
@@ -135,7 +148,7 @@ public class CounterActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.reset:
-                updateDB(nameInDB, mCounter, exactNum);
+                updateDbByResetMenu(nameInDB, mCounter, exactNum);
                 mCounter = 0;
                 currentTempCount = 0;
                 count.setText(String.valueOf(currentTempCount));
@@ -144,7 +157,7 @@ public class CounterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateDB(String col, int c, int n) {
+    public void updateDbByResetMenu(String col, int c, int n) {
         ContentValues values = new ContentValues();
         values.put(col, 0);
         db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
