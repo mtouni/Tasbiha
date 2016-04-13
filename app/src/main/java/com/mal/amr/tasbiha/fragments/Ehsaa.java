@@ -30,7 +30,7 @@ public class Ehsaa extends Fragment {
     CoordinatorLayout coordinatorLayout;
     Snackbar snackbar;
     SQLiteDatabase db;
-    int[] num = new int[]{0, 0, 0, 0};
+    int[] num = new int[]{0, 0, 0, 0, 0};
     int sum = 0;
 
     int mDay, mMonth, mYear;
@@ -89,7 +89,8 @@ public class Ehsaa extends Fragment {
                         new String[]{Contract.FREE_TASBIH,
                                 Contract.SOBHAN_ALLAH,
                                 Contract.ALHAMDULELLAH,
-                                Contract.ALLAH_AKBAR},
+                                Contract.ALLAH_AKBAR,
+                                Contract.LA_ELAH_ELLA_ALLAH},
                         Contract.DATE_TASBIH + " = ?",
                         new String[]{dayOfMonth + "/" + (month + 1) + "/" + year},
                         null, null, null);
@@ -99,7 +100,8 @@ public class Ehsaa extends Fragment {
                         num[0] = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
                         num[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
                         num[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
-                        num[3] = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+                        num[3] = cursor.getInt(cursor.getColumnIndex(Contract.LA_ELAH_ELLA_ALLAH));
+                        num[4] = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
                     } while (cursor.moveToNext());
 
                     for (int i : num) {

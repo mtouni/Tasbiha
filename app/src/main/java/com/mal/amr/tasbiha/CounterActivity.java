@@ -127,6 +127,23 @@ public class CounterActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.setCanceledOnTouchOutside(false);
                         alertDialog.show();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CounterActivity.this, R.style.AlertDialogTheme);
+                        builder.setMessage(R.string.zekr_alert)
+                                .setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        ContentValues values = new ContentValues();
+                                        values.put(Contract.LA_ELAH_ELLA_ALLAH, (la_elah_ella_allah + 1));
+                                        db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+                                        finish();
+                                    }
+                                });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
                     }
 
                 }
@@ -135,11 +152,18 @@ public class CounterActivity extends AppCompatActivity {
 
     }
 
+    int la_elah_ella_allah;
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        //Toast.makeText(this, restSum + "", Toast.LENGTH_SHORT).show();
+        String sql = "select * from " + Contract.TempTasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
+        if (cursor.moveToFirst()) {
+            la_elah_ella_allah = cursor.getInt(cursor.getColumnIndex(Contract.LA_ELAH_ELLA_ALLAH));
+        }
+        cursor.close();
     }
 
     @Override

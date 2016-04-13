@@ -61,16 +61,6 @@ public class BaadAlsalahFragment extends Fragment {
 
         db = new DBHelper(getActivity()).getWritableDatabase();
 
-//        //For test
-//        String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
-//        Cursor c = db.rawQuery(sql, new String[]{whereArg});
-//        if (c.moveToFirst()) {
-//            int n = c.getInt(c.getColumnIndex(Contract.SOBHAN_ALLAH));
-//            Log.d("num", n + "");
-//        }
-//
-//        c.close();
-
         Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
                 new String[]{Contract.FREE_TASBIH,
                         Contract.SOBHAN_ALLAH,
@@ -94,6 +84,7 @@ public class BaadAlsalahFragment extends Fragment {
             values.put(Contract.SOBHAN_ALLAH, 0);
             values.put(Contract.ALHAMDULELLAH, 0);
             values.put(Contract.ALLAH_AKBAR, 0);
+            values.put(Contract.LA_ELAH_ELLA_ALLAH, 0);
             values.put(Contract.DATE_TASBIH, whereArg);
             db.insert(Contract.TempTasbiha.TABLE_NAME, null, values);
             db.insert(Contract.Tasbiha.TABLE_NAME, null, values);
@@ -113,6 +104,7 @@ public class BaadAlsalahFragment extends Fragment {
             values.put(Contract.SOBHAN_ALLAH, 0);
             values.put(Contract.ALHAMDULELLAH, 0);
             values.put(Contract.ALLAH_AKBAR, 0);
+            //values.put(Contract.LA_ELAH_ELLA_ALLAH, 0);
             db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[] {whereArg});
         }
         return true;

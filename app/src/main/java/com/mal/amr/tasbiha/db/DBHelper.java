@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "tasbihah.db";
-    public static final int VERSION = 2;
+    public static final int VERSION = 5;
 
 
     public DBHelper(Context context) {
@@ -24,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.SOBHAN_ALLAH + " INTEGER, " +
                 Contract.ALHAMDULELLAH + " INTEGER, " +
                 Contract.ALLAH_AKBAR + " INTEGER, " +
+                Contract.LA_ELAH_ELLA_ALLAH + " INTEGER, " +
                 Contract.DATE_TASBIH + " TEXT not null unique );";
 
         final String demo_sql = "CREATE TABLE " + Contract.TempTasbiha.TABLE_NAME +
@@ -32,6 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Contract.SOBHAN_ALLAH + " INTEGER, " +
                 Contract.ALHAMDULELLAH + " INTEGER, " +
                 Contract.ALLAH_AKBAR + " INTEGER, " +
+                Contract.LA_ELAH_ELLA_ALLAH + " INTEGER, " +
                 Contract.DATE_TASBIH + " TEXT not null unique );";
 
         db.execSQL(sql);

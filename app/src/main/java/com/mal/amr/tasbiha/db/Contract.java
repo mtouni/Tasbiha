@@ -10,6 +10,7 @@ public class Contract {
     public static final String SOBHAN_ALLAH = "sobhan_allah";
     public static final String ALHAMDULELLAH = "alhamdulellah";
     public static final String ALLAH_AKBAR = "allah_akbar";
+    public static final String LA_ELAH_ELLA_ALLAH = "la_elah_ella_allah";
     public static final String DATE_TASBIH = "date_tasbih";
 
     public static class Tasbiha implements BaseColumns {
