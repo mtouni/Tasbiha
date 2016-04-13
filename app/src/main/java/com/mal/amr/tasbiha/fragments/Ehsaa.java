@@ -55,6 +55,7 @@ public class Ehsaa extends Fragment {
         calendarView.setShowWeekNumber(false);
         calendarView.setFirstDayOfWeek(1);
 
+        //to get the minimum date for the calendar view
         Calendar minCalndarViewLimit = Calendar.getInstance();
         minCalndarViewLimit.set(Calendar.SECOND, 0);
         minCalndarViewLimit.set(Calendar.MINUTE, 0);
@@ -63,6 +64,7 @@ public class Ehsaa extends Fragment {
         minCalndarViewLimit.set(Calendar.MONTH, minCalndarViewLimit.get(Calendar.MONTH));
         minCalndarViewLimit.set(Calendar.YEAR, minCalndarViewLimit.get(Calendar.YEAR));
 
+        //to get the maximum date for the calendar view
         Calendar maxCalndarViewLimit = Calendar.getInstance();
         maxCalndarViewLimit.set(Calendar.SECOND, 0);
         maxCalndarViewLimit.set(Calendar.MINUTE, 0);
@@ -71,10 +73,11 @@ public class Ehsaa extends Fragment {
         maxCalndarViewLimit.set(Calendar.MONTH, maxCalndarViewLimit.get(Calendar.MONTH));
         maxCalndarViewLimit.set(Calendar.YEAR, maxCalndarViewLimit.get(Calendar.YEAR));
 
-
+        //settng them now
         calendarView.setMinDate(minCalndarViewLimit.getTimeInMillis());
         calendarView.setMaxDate(maxCalndarViewLimit.getTimeInMillis());
 
+        //when we change the selected date
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
@@ -85,6 +88,7 @@ public class Ehsaa extends Fragment {
 
                 sum = 0;
 
+                //get the whole numbers from db
                 Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
                         new String[]{Contract.FREE_TASBIH,
                                 Contract.SOBHAN_ALLAH,
@@ -104,6 +108,7 @@ public class Ehsaa extends Fragment {
                         num[4] = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
                     } while (cursor.moveToNext());
 
+                    //getting the sum of them
                     for (int i : num) {
                         sum += i;
                     }
@@ -140,6 +145,8 @@ public class Ehsaa extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.up_or_down:
+
+                //to return the current day
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);

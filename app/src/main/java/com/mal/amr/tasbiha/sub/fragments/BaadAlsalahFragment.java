@@ -2,8 +2,6 @@ package com.mal.amr.tasbiha.sub.fragments;
 
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,8 +36,6 @@ public class BaadAlsalahFragment extends Fragment {
             + "/" + (calendar.get(Calendar.MONTH) + 1)
             + "/" + calendar.get(Calendar.YEAR);
 
-    SharedPreferences sh;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +46,6 @@ public class BaadAlsalahFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_baad_alsalah, container, false);
-
-        sh = getActivity().getSharedPreferences("myFrsMenus", Context.MODE_PRIVATE);
 
         azkar_list = getActivity().getResources().getStringArray(R.array.azkar_list);
         //num_list = getActivity().getResources().getIntArray(R.array.num_list);
@@ -67,6 +61,7 @@ public class BaadAlsalahFragment extends Fragment {
 
         db = new DBHelper(getActivity()).getWritableDatabase();
 
+        //to check if the current day in the db ot not
         Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
                 new String[]{Contract.FREE_TASBIH,
                         Contract.SOBHAN_ALLAH,
@@ -78,13 +73,17 @@ public class BaadAlsalahFragment extends Fragment {
                 new String[]{whereArg},
                 null, null, null);
 
+        //if so
         if (cursor.moveToFirst()) {
             do {
+                //get its number to display them
                 num_list[0] = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
                 num_list[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
                 num_list[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
             } while (cursor.moveToNext());
         } else {
+
+            //if not, create a raw with zero values for each raw
             ContentValues values = new ContentValues();
             values.put(Contract.FREE_TASBIH, 0);
             values.put(Contract.SOBHAN_ALLAH, 0);
@@ -98,6 +97,7 @@ public class BaadAlsalahFragment extends Fragment {
 
         cursor.close();
 
+        //make a list with these numbers
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
     }
@@ -105,6 +105,8 @@ public class BaadAlsalahFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.reset2) {
+
+            //to reset the current list and the temp db
             recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, new int[]{0, 0, 0}));
             ContentValues values = new ContentValues();
             values.put(Contract.SOBHAN_ALLAH, 0);

@@ -46,6 +46,7 @@ public class Tasbih extends Fragment {
     public void onResume() {
         super.onResume();
 
+        //making the sh by default is 0
         i = sh.getInt("f", 0);
 
         switch (i) {
@@ -67,10 +68,13 @@ public class Tasbih extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.tasbih_menu, menu);
 
+        //in using the app
         if (selected_item != 0) {
             menu.findItem(selected_item).setChecked(true);
+
         } else {
 
+            //in re launch the app
             switch (i)  {
                 case 0:
                     menu.findItem(R.id.baad_alsalah).setChecked(true);
@@ -92,9 +96,11 @@ public class Tasbih extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.baad_alsalah:
+                //store this position in the sh
                 editor.putInt("f", 0);
                 editor.apply();
 
+                //and get its fragment
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new BaadAlsalahFragment()).commit();
                 item.setChecked(true);
@@ -102,9 +108,11 @@ public class Tasbih extends Fragment {
                 break;
 
             case R.id.gheer_mohadad:
+                //store this position in the sh
                 editor.putInt("f", 1);
                 editor.apply();
 
+                //and get its fragment
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new GheerMohadadFragment()).commit();
                 item.setChecked(true);

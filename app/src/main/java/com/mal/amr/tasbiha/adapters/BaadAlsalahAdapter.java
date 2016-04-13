@@ -22,6 +22,8 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
     Context context;
     String[] azkar_list;
     public static int[] num_list;
+
+    //the exact names of columns in dbs
     public static String[] azkarDB = {Contract.SOBHAN_ALLAH, Contract.ALHAMDULELLAH, Contract.ALLAH_AKBAR};
 
     public BaadAlsalahAdapter(Context context, String[] azkar_list, int[] num_list) {
@@ -40,15 +42,6 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
         holder.zekr.setText(azkar_list[position]);
         holder.num.setText(String.valueOf(num_list[position]));
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, CounterActivity.class);
-//                intent.putExtra("zekr", holder.getAdapterPosition());
-//                intent.putExtra("num", num_list[holder.getAdapterPosition()]);
-//                context.startActivity(intent);
-//            }
-//        });
     }
 
     @Override
@@ -76,6 +69,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
         @Override
         public void onClick(View v) {
 
+            //if the item's number = 33
             if (num_list[getAdapterPosition()] == 33) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
                 builder.setMessage(R.string.hadith)
@@ -84,15 +78,15 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
                 AlertDialog alertDialog = builder.create();
                 alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.show();
+
             } else {
+
                 int restSum = 0;
                 for (int i = 0; i < num_list.length; i++) {
                     if (i != getAdapterPosition()) {
                         restSum += num_list[i];
                     }
                 }
-
-
                 Intent intent = new Intent(context, CounterActivity.class);
                 intent.putExtra("zekr", getAdapterPosition());
                 intent.putExtra("num", num_list[getAdapterPosition()]);

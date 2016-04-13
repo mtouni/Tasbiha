@@ -6,6 +6,8 @@ import android.provider.BaseColumns;
  * Created by Amr on 4/8/2016.
  */
 public class Contract {
+
+    //common columns names for the two dbs
     public static final String FREE_TASBIH = "free_tasbih";
     public static final String SOBHAN_ALLAH = "sobhan_allah";
     public static final String ALHAMDULELLAH = "alhamdulellah";

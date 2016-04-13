@@ -26,8 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
+        //to add the name of two tabs
         tabLayout.addTab(tabLayout.newTab().setText("تسبيح"));
         tabLayout.addTab(tabLayout.newTab().setText("إحصاء"));
+
+        //to change their font family
         ChangeFontFamily.changeTabFontFamily(this, tabLayout);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
