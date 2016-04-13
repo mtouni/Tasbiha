@@ -32,10 +32,22 @@ public class CounterActivity extends AppCompatActivity {
     String whereArg = calendar.get(Calendar.DAY_OF_MONTH)
             + "/" + (calendar.get(Calendar.MONTH) + 1)
             + "/" + calendar.get(Calendar.YEAR);
-    int zekr, oldNum, newNum;
+    int zekr;
 
-    int old = oldNum;
-    int dbNum = 0;
+    //the current counter
+    // which help me in storing in the db,
+    // and it's zero when we start the app and it will be zero after using reset menu
+    //and there is no affect on it
+    //we just use it for get the current counting since we start the app
+    int mCounter;
+
+    //the old count after reset to zero
+    int exactNum;
+
+    //the exact count to be displayed in the text view
+    //and it gets an exact number from the db in starting the app to be displayed,
+    // and it will be zero in using the reset menu
+    int currentTempCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +57,10 @@ public class CounterActivity extends AppCompatActivity {
         db = new DBHelper(this).getWritableDatabase();
         intent = getIntent();
         zekr = intent.getExtras().getInt("zekr");
-        oldNum = intent.getExtras().getInt("num");
+        currentTempCount = intent.getExtras().getInt("num");
 
         Log.d("zekr", String.valueOf(zekr));
-        Log.d("oldNum", String.valueOf(oldNum));
+        Log.d("oldNum", String.valueOf(currentTempCount));
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -63,27 +75,51 @@ public class CounterActivity extends AppCompatActivity {
         frameLayout = (FrameLayout) findViewById(R.id.counter);
         count = (TextView) findViewById(R.id.count);
 
-        count.setText(String.valueOf(oldNum));
+        count.setText(String.valueOf(currentTempCount));
 
-        newNum = oldNum;
+        String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
+        if (cursor.moveToFirst()) {
+            do {
+                switch (intent.getExtras().getString("nameInDB")) {
+                    case Contract.SOBHAN_ALLAH:
+                        exactNum = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
+                        Log.d("exactNum", exactNum + "");
+                        break;
+
+                    case Contract.ALHAMDULELLAH:
+                        exactNum = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
+                        Log.d("exactNum", exactNum + "");
+                        break;
+
+                    case Contract.ALLAH_AKBAR:
+                        exactNum = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
+                        Log.d("exactNum", exactNum + "");
+                        break;
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newNum += 1;
-                count.setText(String.valueOf(newNum));
+                mCounter += 1;
+                currentTempCount += 1;
+
+                count.setText(String.valueOf(currentTempCount));
 
                 switch (zekr) {
                     case 0:
-                        updateDB(Contract.SOBHAN_ALLAH, newNum);
+                        updateDB(Contract.SOBHAN_ALLAH, mCounter);
                         break;
 
                     case 1:
-                        updateDB(Contract.ALHAMDULELLAH, newNum);
+                        updateDB(Contract.ALHAMDULELLAH, mCounter);
                         break;
 
                     case 2:
-                        updateDB(Contract.ALLAH_AKBAR, newNum);
+                        updateDB(Contract.ALLAH_AKBAR, mCounter);
                         break;
                 }
             }
@@ -93,40 +129,11 @@ public class CounterActivity extends AppCompatActivity {
 
     public void updateDB(String col, int n) {
 
-        ContentValues values = new ContentValues();
-        values.put(col, n);
-        db.update(Contract.TempTasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
+    }
 
-//        Cursor cursor = db.query(Contract.TABLE_NAME,
-//                new String[]{col},
-//                Contract.DATE_TASBIH + " = ?",
-//                new String[]{whereArg},
-//                null, null, null);
-
-        String sql = "select * from " + Contract.TempTasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
-
-        Cursor cursor = db.rawQuery(sql, new String[]{whereArg});
-
-        if (cursor.moveToFirst()) {
-            //dbNum = ;
-
-            if (n > oldNum) {
-
-
-                n = (n - oldNum) + cursor.getInt(cursor.getColumnIndex(col));
-            } else {
-                n = n + dbNum;
-            }
-        }
-
-        ContentValues values2 = new ContentValues();
-        values2.put(col, n);
-
-        db.update(Contract.Tasbiha.TABLE_NAME, values2, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
-        cursor.close();
-
-        oldNum = n;
-        Log.d("oldNum", oldNum + "");
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -143,8 +150,8 @@ public class CounterActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.reset:
-                newNum = 0;
-                count.setText(String.valueOf(newNum));
+//                newNum = 0;
+//                count.setText(String.valueOf(newNum));
                 switchZekr(zekr);
                 break;
         }

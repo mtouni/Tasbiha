@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.mal.amr.tasbiha.CounterActivity;
 import com.mal.amr.tasbiha.R;
+import com.mal.amr.tasbiha.db.Contract;
 import com.mal.amr.tasbiha.utilties.CustomFontLoader;
 
 /**
@@ -20,6 +21,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
     Context context;
     String[] azkar_list;
     public static int[] num_list;
+    public static String[] azkarDB = {Contract.SOBHAN_ALLAH, Contract.ALHAMDULELLAH, Contract.ALLAH_AKBAR};
 
     public BaadAlsalahAdapter(Context context, String[] azkar_list, int[] num_list) {
         this.context = context;
@@ -75,6 +77,7 @@ public class BaadAlsalahAdapter extends RecyclerView.Adapter<BaadAlsalahAdapter.
             Intent intent = new Intent(context, CounterActivity.class);
             intent.putExtra("zekr", getAdapterPosition());
             intent.putExtra("num", num_list[getAdapterPosition()]);
+            intent.putExtra("nameInDB", azkarDB[getAdapterPosition()]);
             context.startActivity(intent);
         }
     }

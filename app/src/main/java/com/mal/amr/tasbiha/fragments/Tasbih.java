@@ -33,14 +33,14 @@ public class Tasbih extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tasbih_layout, container, false);
 
-//        //initialize the first fragment
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction().replace(R.id.container, new BaadAlsalahFragment())
-//                .commit();
-
+        //initialize the first fragment
         getActivity().getSupportFragmentManager()
-                .beginTransaction().replace(R.id.container, new GheerMohadadFragment())
+                .beginTransaction().replace(R.id.container, new BaadAlsalahFragment())
                 .commit();
+
+//        getActivity().getSupportFragmentManager()
+//                .beginTransaction().replace(R.id.container, new GheerMohadadFragment())
+//                .commit();
         return v;
     }
 

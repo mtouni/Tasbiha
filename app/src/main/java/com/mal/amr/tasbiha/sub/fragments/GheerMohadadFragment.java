@@ -45,7 +45,7 @@ public class GheerMohadadFragment extends Fragment {
     int mCounter;
 
     //the old count after reset to zero
-    int oldCount;
+    int exactNum;
 
     //the exact count to be displayed in the text view
     //and it gets an exact number from the db in starting the app to be displayed,
@@ -71,16 +71,16 @@ public class GheerMohadadFragment extends Fragment {
         frameLayout = (FrameLayout) v.findViewById(R.id.counter);
         count = (TextView) v.findViewById(R.id.count);
 
-        //to get the past number from the database
+        //to get the past number from the original database
         Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
                 new String[]{Contract.FREE_TASBIH},
                 Contract.DATE_TASBIH + " = ?",
                 new String[]{whereArg},
                 null, null, null);
 
-        //to get the past number from the database
+        //to get the past number from the original database
         if (cursor.moveToFirst()) {
-            oldCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+            exactNum = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
         }
         cursor.close();
 
@@ -94,8 +94,8 @@ public class GheerMohadadFragment extends Fragment {
 
                 //to store in the original db
                 ContentValues values = new ContentValues();
-                //notice that we use ( mCounter + oldCount ) even if the mCount is zero
-                values.put(Contract.FREE_TASBIH, (mCounter + oldCount));
+                //notice that we use ( mCounter + exactNum ) even if the mCount is zero
+                values.put(Contract.FREE_TASBIH, (mCounter + exactNum));
                 db.update(Contract.Tasbiha.TABLE_NAME, values, Contract.DATE_TASBIH + " = ?", new String[]{whereArg});
 
                 //to store in the temp db
@@ -161,7 +161,7 @@ public class GheerMohadadFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.reset2) {
 
-            //in reset menu, we get the last number from the original db and store it in oldCount variable
+            //in reset menu, we get the last number from the original db and store it in exactNum variable
             Cursor cursor = db.query(Contract.Tasbiha.TABLE_NAME,
                     new String[]{Contract.FREE_TASBIH},
                     Contract.DATE_TASBIH + " = ?",
@@ -169,7 +169,7 @@ public class GheerMohadadFragment extends Fragment {
                     null, null, null);
 
             if (cursor.moveToFirst()) {
-                oldCount = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
+                exactNum = cursor.getInt(cursor.getColumnIndex(Contract.FREE_TASBIH));
             }
             cursor.close();
 

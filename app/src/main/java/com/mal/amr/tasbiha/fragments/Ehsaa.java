@@ -54,7 +54,6 @@ public class Ehsaa extends Fragment {
 
         calendarView = (CalendarView) v.findViewById(R.id.calendarView);
         calendarView.setShowWeekNumber(false);
-
         calendarView.setFirstDayOfWeek(1);
 
         Calendar minCalndarViewLimit = Calendar.getInstance();
@@ -63,6 +62,7 @@ public class Ehsaa extends Fragment {
         minCalndarViewLimit.set(Calendar.HOUR, 0);
         minCalndarViewLimit.set(Calendar.DAY_OF_MONTH, minCalndarViewLimit.getActualMinimum(Calendar.DAY_OF_MONTH));
         minCalndarViewLimit.set(Calendar.MONTH, minCalndarViewLimit.get(Calendar.MONTH));
+        minCalndarViewLimit.set(Calendar.YEAR, minCalndarViewLimit.get(Calendar.YEAR));
 
         Calendar maxCalndarViewLimit = Calendar.getInstance();
         maxCalndarViewLimit.set(Calendar.SECOND, 0);
@@ -105,7 +105,7 @@ public class Ehsaa extends Fragment {
                 }
 
                 snackbar = Snackbar.make(coordinatorLayout, String.valueOf(sum), Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Ok", new View.OnClickListener() {
+                        .setAction("تم", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 snackbar.dismiss();

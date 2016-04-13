@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,45 +61,45 @@ public class BaadAlsalahFragment extends Fragment {
 
         db = new DBHelper(getActivity()).getWritableDatabase();
 
-        //For test
-        String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
-        Cursor c = db.rawQuery(sql, new String[]{whereArg});
-        if (c.moveToFirst()) {
-            int n = c.getInt(c.getColumnIndex(Contract.SOBHAN_ALLAH));
-            Log.d("num", n + "");
-        }
-
-        c.close();
-
-//        Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
-//                new String[]{Contract.FREE_TASBIH,
-//                        Contract.SOBHAN_ALLAH,
-//                        Contract.ALHAMDULELLAH,
-//                        Contract.ALLAH_AKBAR,
-//                        Contract.DATE_TASBIH
-//                },
-//                Contract.DATE_TASBIH + " = ?",
-//                new String[]{whereArg},
-//                null, null, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                num_list[0] = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
-//                num_list[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
-//                num_list[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
-//            } while (cursor.moveToNext());
-//        } else {
-//            ContentValues values = new ContentValues();
-//            values.put(Contract.FREE_TASBIH, 0);
-//            values.put(Contract.SOBHAN_ALLAH, 0);
-//            values.put(Contract.ALHAMDULELLAH, 0);
-//            values.put(Contract.ALLAH_AKBAR, 0);
-//            values.put(Contract.DATE_TASBIH, whereArg);
-//            db.insert(Contract.TempTasbiha.TABLE_NAME, null, values);
-//            db.insert(Contract.Tasbiha.TABLE_NAME, null, values);
+//        //For test
+//        String sql = "select * from " + Contract.Tasbiha.TABLE_NAME + " where " + Contract.DATE_TASBIH + " = ?";
+//        Cursor c = db.rawQuery(sql, new String[]{whereArg});
+//        if (c.moveToFirst()) {
+//            int n = c.getInt(c.getColumnIndex(Contract.SOBHAN_ALLAH));
+//            Log.d("num", n + "");
 //        }
 //
-//        cursor.close();
+//        c.close();
+
+        Cursor cursor = db.query(Contract.TempTasbiha.TABLE_NAME,
+                new String[]{Contract.FREE_TASBIH,
+                        Contract.SOBHAN_ALLAH,
+                        Contract.ALHAMDULELLAH,
+                        Contract.ALLAH_AKBAR,
+                        Contract.DATE_TASBIH
+                },
+                Contract.DATE_TASBIH + " = ?",
+                new String[]{whereArg},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                num_list[0] = cursor.getInt(cursor.getColumnIndex(Contract.SOBHAN_ALLAH));
+                num_list[1] = cursor.getInt(cursor.getColumnIndex(Contract.ALHAMDULELLAH));
+                num_list[2] = cursor.getInt(cursor.getColumnIndex(Contract.ALLAH_AKBAR));
+            } while (cursor.moveToNext());
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(Contract.FREE_TASBIH, 0);
+            values.put(Contract.SOBHAN_ALLAH, 0);
+            values.put(Contract.ALHAMDULELLAH, 0);
+            values.put(Contract.ALLAH_AKBAR, 0);
+            values.put(Contract.DATE_TASBIH, whereArg);
+            db.insert(Contract.TempTasbiha.TABLE_NAME, null, values);
+            db.insert(Contract.Tasbiha.TABLE_NAME, null, values);
+        }
+
+        cursor.close();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new BaadAlsalahAdapter(getActivity(), azkar_list, num_list));
